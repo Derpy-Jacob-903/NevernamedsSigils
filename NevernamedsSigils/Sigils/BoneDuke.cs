@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public class BoneDuke : AbilityBehaviour
     {
         public static void Init()
         {
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Bone Duke", "When [creature] dies, 3 Bones are awarded instead of 1.",
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Bone", "When [creature] dies, 3 Bones are awarded instead of 1.",
                       typeof(BoneDuke),
                       categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part1Modular },
                       powerLevel: 1,
@@ -40,9 +40,10 @@ namespace NevernamedsSigils
         public override IEnumerator OnDie(bool wasSacrifice, PlayableCard killer)
         {
             yield return base.PreSuccessfulTriggerSequence();
+
             yield return Singleton<ResourcesManager>.Instance.AddBones(2, base.Card.Slot);
             yield return base.LearnAbility(0.4f);
             yield break;
-        }       
+        }
     }
 }

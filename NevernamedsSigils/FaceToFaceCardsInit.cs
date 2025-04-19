@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public static class FaceToFaceCardsInit
     {

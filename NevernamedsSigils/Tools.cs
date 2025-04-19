@@ -13,7 +13,7 @@ using DigitalRuby.LightningBolt;
 using GBC;
 using InscryptionAPI.Resource;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public static class Tools
     {
@@ -115,7 +115,6 @@ namespace NevernamedsSigils
         {
             CardInfo cardByName = CardLoader.GetCardByName("!DEATHCARD_PIXEL_BASE");
             cardByName.pixelPortrait = abilities.pixelPortrait;
-            cardByName.appearanceBehaviour = new List<CardAppearanceBehaviour.Appearance>() { CustomAppearances.PixelDeathcardBackground };
             cardByName.mods.Add(new CardModificationInfo
             {
                 attackAdjustment = stats.Attack,
@@ -140,7 +139,6 @@ namespace NevernamedsSigils
         {
             CardInfo cardByName = CardLoader.GetCardByName("!DEATHCARD_PIXEL_BASE");
             cardByName.pixelPortrait = abilities.pixelPortrait;
-            cardByName.appearanceBehaviour = new List<CardAppearanceBehaviour.Appearance>() { CustomAppearances.PixelDeathcardBackground };
             cardByName.mods.Add(new CardModificationInfo
             {
                 attackAdjustment = stats.Attack,
@@ -310,7 +308,6 @@ namespace NevernamedsSigils
         {
             bool meetsRequirements = true;
             if (card.HasAbility(Ability.GemDependant) && ResourcesManager.Instance.gems.Count <= 0) meetsRequirements = false;
-            if (card.HasAbility(EnergyDependent.ability) && ResourcesManager.Instance.PlayerEnergy <= 0) meetsRequirements = false;
             return meetsRequirements;
         }
         public static void ClearBoard(List<CardSlot> exemptions = null, bool eraseInsteadOfKill = false, bool glitchout = false, bool protectGiant = true)

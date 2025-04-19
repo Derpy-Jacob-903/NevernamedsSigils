@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public class Writhe : AbilityBehaviour
     {

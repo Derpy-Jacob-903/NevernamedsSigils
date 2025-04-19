@@ -1,4 +1,5 @@
 ﻿using APIPlugin;
+using BepInEx;
 using DiskCardGame;
 using InscryptionAPI.Card;
 using InscryptionAPI.Triggers;
@@ -9,18 +10,19 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
-    public class Docile : AbilityBehaviour
+    public class DelayedRepeating : AbilityBehaviour
     {
         public static void Init()
         {
-            baseIcon = Tools.LoadTex("NevernamedsSigils/Resources/Sigils/docile.png");
+
+            baseIcon = Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_1.png");
             basePixelIcon = Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile_pixel.png");
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Docile", "[creature] will wait a set number of turns in between being allowed to attack.",
-                      typeof(Docile),
-                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook },
-                      powerLevel: -2,
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Delayed Attack", "[creature] will wait a set number of turns before being allowed to attack.",
+                      typeof(Delayed),
+                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
+                      powerLevel: -3,
                       stackable: false,
                       opponentUsable: false,
                       tex: baseIcon,
@@ -29,12 +31,12 @@ namespace NevernamedsSigils
             ability = newSigil.ability;
             countDownIcons = new Dictionary<int, Texture>()
             {
-                {0, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/docile0.png") },
-                {1, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/docile1.png") },
-                {2, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/docile2.png") },
-                {3, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/docile3.png") },
-                {4, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/docile4.png") },
-                {5, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/docile5.png") },
+                {0, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack.png") },
+                {1, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_1.png") },
+                {2, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_2.png") },
+                {3, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_3.png") },
+                {4, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_4.png") },
+                {5, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_5.png") },
             };
             countDownPixelIcons = new Dictionary<int, Texture>()
             {
@@ -77,7 +79,7 @@ namespace NevernamedsSigils
         }
         private IEnumerator Initialise()
         {
-            turnsUntilNextAttack = 0;
+            turnsUntilNextAttack = Counter;
             cooldownTotal = Counter;
             initialised = true;
             ReRenderCard();
@@ -87,11 +89,11 @@ namespace NevernamedsSigils
         {
             if (Tools.GetActAsInt() == 2)
             {
-                base.Card.RenderInfo.OverrideAbilityIcon(Docile.ability, countDownPixelIcons.ContainsKey(turnsUntilNextAttack) ? countDownPixelIcons[turnsUntilNextAttack] : basePixelIcon);
+                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, countDownPixelIcons.ContainsKey(turnsUntilNextAttack) ? countDownPixelIcons[turnsUntilNextAttack] : basePixelIcon);
             }
             else
             {
-                base.Card.RenderInfo.OverrideAbilityIcon(Docile.ability, countDownIcons.ContainsKey(turnsUntilNextAttack) ? countDownIcons[turnsUntilNextAttack] : baseIcon);
+                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, countDownIcons.ContainsKey(turnsUntilNextAttack) ? countDownIcons[turnsUntilNextAttack] : baseIcon);
             }
             base.Card.RenderCard();
         }

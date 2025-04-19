@@ -8,39 +8,41 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
-    public class Doomed : AbilityBehaviour
+    public class Delayed : AbilityBehaviour
     {
         public static void Init()
         {
-            baseIcon = Tools.LoadTex("NevernamedsSigils/Resources/Sigils/doomed.png");
-            basePixelIcon = Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/doomed_pixel.png");
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Doomed", "At the end of the turn, [creature] will perish.",
-                      typeof(Doomed),
-                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook },
+            baseIcon = Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_1.png");
+            basePixelIcon = Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile_pixel.png");
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Delayed Attack", "[creature] will wait a set number of turns before being allowed to attack.",
+                      typeof(Delayed),
+                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
                       powerLevel: -3,
                       stackable: false,
                       opponentUsable: false,
                       tex: baseIcon,
                       pixelTex: basePixelIcon);
 
-            Doomed.ability = newSigil.ability;
+            ability = newSigil.ability;
             countDownIcons = new Dictionary<int, Texture>()
             {
-                {1, baseIcon },
-                {2, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/doomed2.png") },
-                {3, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/doomed3.png") },
-                {4, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/doomed4.png") },
-                {5, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/doomed5.png") },
+                {0, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack.png") },
+                {1, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_1.png") },
+                {2, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_2.png") },
+                {3, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_3.png") },
+                {4, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_4.png") },
+                {5, Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_5.png") },
             };
             pixelCountDownIcons = new Dictionary<int, Texture>()
             {
-                {1, basePixelIcon },
-                {2, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/doomed2_pixel.png") },
-                {3, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/doomed3_pixel.png") },
-                {4, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/doomed4_pixel.png") },
-                {5, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/doomed5_pixel.png") },
+                {0, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile0_pixel.png") },
+                {1, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile1_pixel.png") },
+                {2, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile2_pixel.png") },
+                {3, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile3_pixel.png") },
+                {4, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile4_pixel.png") },
+                {5, Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile5_pixel.png") },
             };
         }
         public static Ability ability;
@@ -72,9 +74,9 @@ namespace NevernamedsSigils
             get
             {
                 int customLifespan = 1;
-                if (base.Card.Info.GetExtendedProperty("CustomDoomedDuration") != null)
+                if (base.Card.Info.GetExtendedProperty("CustomDocileCounter") != null)
                 {
-                    bool succeed = int.TryParse(base.Card.Info.GetExtendedProperty("CustomDoomedDuration"), out customLifespan);
+                    bool succeed = int.TryParse(base.Card.Info.GetExtendedProperty("CustomDocileCounter"), out customLifespan);
                     customLifespan = succeed ? customLifespan : 1;
                 }
                 return customLifespan;
@@ -111,17 +113,31 @@ namespace NevernamedsSigils
             ReRenderCard(lifeRemaining);
             if (livedTurns >= life)
             {
-                yield return base.PreSuccessfulTriggerSequence();
-                Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
-                yield return new WaitForSeconds(0.15f);
+                //yield return base.PreSuccessfulTriggerSequence();
+                //Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
+                //yield return new WaitForSeconds(0.15f);
 
-                yield return base.Card.Die(false, null, false);
+                RemoveSigil(this.Card, this.Ability);
 
-                yield return new WaitForSeconds(0.3f);
+                //yield return new WaitForSeconds(0.3f);
                 yield return base.LearnAbility(0.1f);
             }
             yield break;
         }
         private int livedTurns;
+        public IEnumerator RemoveSigil(PlayableCard targetCard, Ability ability)
+        {
+            if (targetCard != null && targetCard.HasAbility(ability))
+            {
+                yield return PreSuccessfulTriggerSequence();
+                CardModificationInfo newMod = new CardModificationInfo();
+                newMod.negateAbilities = new List<Ability>() { ability };
+                targetCard.AddTemporaryMod(newMod);
+                targetCard.Status.hiddenAbilities.Add(ability);
+                targetCard.RenderCard();
+                targetCard.Anim.StrongNegationEffect();
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
     }
 }

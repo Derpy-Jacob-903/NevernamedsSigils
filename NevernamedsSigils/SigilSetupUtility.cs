@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     class SigilSetupUtility
     {
         public static AbilityInfo MakeNewSigil(string name, string description, Type behaviour, List<AbilityMetaCategory> categories = null, int powerLevel = 0, bool stackable = false, bool opponentUsable = false, Texture tex = null, Texture2D pixelTex = null,
             bool isConduit = false, bool isActivated = false, string triggerText = null, bool isConduitCell = false)
         {
-            AbilityInfo info = AbilityManager.New("nevernamed.inscryption.sigils",
+            AbilityInfo info = AbilityManager.New("druidSurv.sigils",
                 name, description,
                behaviour, tex != null ? tex : Tools.LoadTex("NevernamedsSigils/Resources/Sigils/placeholdersigil.png"));
             info.powerLevel = powerLevel;
@@ -29,7 +29,7 @@ namespace NevernamedsSigils
 
         public static StatIconInfo MakeNewStatIcon(string name, string description, Type behaviour, Texture2D tex = null, Texture2D pixelTex = null, bool isForHealth = false, List<AbilityMetaCategory> categories = null, string gbcDescription = null)
         {
-            StatIconInfo info = StatIconManager.New("nevernamed.inscryption.sigils", name, description, behaviour);
+            StatIconInfo info = StatIconManager.New("druidSurv.sigils", name, description, behaviour);
 
             info.iconGraphic = tex != null ? tex : Tools.LoadTex("NevernamedsSigils/Resources/Sigils/placeholdersigil.png");
             info.pixelIconGraphic = pixelTex != null ? Tools.GenerateAct2Portrait(pixelTex) : null;
@@ -47,10 +47,7 @@ namespace NevernamedsSigils
             {Tribe.Bird, "Tail_Bird" },
             {Tribe.Insect, "Tail_Insect" },
             {Tribe.Hooved, "Tail_Furry" },
-            {Tribe.Squirrel, "Tail_Furry" },
-            {NevernamedsTribes.Crustacean, "WrigglingPereiopod" },
-            {NevernamedsTribes.Arachnid, "Tail_Insect" },
-            {NevernamedsTribes.Rodent, "SigilNevernamed WormyTail" },
+            {Tribe.Squirrel, "Tail_Furry" }
         };
         public static CardInfo NewCard(string internalName, string displayname, int power, int health, List<CardMetaCategory> categories, CardTemple temple, string description,
             int bloodCost = 0, int bonesCost = 0, int energyCost = 0, List<GemType> gemsCost = null, List<Ability> abilities = null, Texture2D defaultTex = null, Texture2D emissionTex = null, Texture2D pixelTex = null, Texture2D altTexture = null, Texture2D altTextureEmission = null,

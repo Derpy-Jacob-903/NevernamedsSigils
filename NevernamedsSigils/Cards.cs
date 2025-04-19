@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using InscryptionAPI.Card;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public static class Cards
     {

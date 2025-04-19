@@ -7,7 +7,7 @@ using InscryptionAPI.Card;
 using InscryptionAPI;
 using System.Collections;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public static class CustomCostManager
     {

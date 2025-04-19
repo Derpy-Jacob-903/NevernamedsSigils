@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public class FakeCombatHandler
     {
@@ -195,19 +195,6 @@ namespace NevernamedsSigils
                     yield return new WaitForSeconds(waitAfter);
 
                     //Recreated Patches
-                    if (attackingSlot.Card != null &&  attackingSlot.Card.HasAbility(SplashDamage.ability))
-                    {
-                        CardSlot toLeft = Singleton<BoardManager>.Instance.GetAdjacent(opposingSlot, true);
-                        CardSlot toRight = Singleton<BoardManager>.Instance.GetAdjacent(opposingSlot, false);
-
-                        if (toLeft && toLeft.Card != null) { yield return toLeft.Card.TakeDamage(1, attackingSlot.Card); }
-                        if (toRight && toRight.Card != null) { yield return toRight.Card.TakeDamage(1, attackingSlot.Card); }
-                    }
-                    if (opposingSlot.Card != null && opposingSlot.Card.FaceDown && opposingSlot.Card.HasAbility(SubaquaticSpines.ability) && attackingSlot.Card != null &&  !attackingSlot.Card.AttackIsBlocked(opposingSlot) && (!attackingSlot.Card.HasAbility(Ability.Flying) || opposingSlot.Card.HasAbility(Ability.Reach)))
-                    {
-                        yield return new WaitForSeconds(0.55f);
-                        yield return attackingSlot.Card.TakeDamage(1, opposingSlot.Card);
-                    }
                 }
                 yield break;
             }
@@ -227,12 +214,8 @@ namespace NevernamedsSigils
             }
             protected virtual IEnumerator DealOverkillDamage(int damage, CardSlot attackingSlot, CardSlot opposingSlot)
             {
-                if (attackingSlot && attackingSlot.Card && attackingSlot.Card.HasAbility(Mauler.ability) & damage > 0)
-                {
-                    yield return new WaitForSeconds(0.1f);
-                    yield return Singleton<LifeManager>.Instance.ShowDamageSequence(damage, damage, !attackingSlot.Card.slot.IsPlayerSlot, 0.1f, null, 0f, true);
-                }
-                else if (attackingSlot.Card != null && attackingSlot.IsPlayerSlot && damage > 0)
+                
+                if (attackingSlot.Card != null && attackingSlot.IsPlayerSlot && damage > 0)
                 {
                     PlayableCard queuedCard = Singleton<BoardManager>.Instance.GetCardQueuedForSlot(opposingSlot);
                     if (queuedCard != null)

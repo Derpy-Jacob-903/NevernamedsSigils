@@ -9,7 +9,7 @@ using GBC;
 using InscryptionAPI.PixelCard;
 //using InscryptionAPI.PixelCard;
 
-namespace NevernamedsSigils
+namespace NevernamedsSigils.Bloons
 {
     public static class CustomAppearances
     {
