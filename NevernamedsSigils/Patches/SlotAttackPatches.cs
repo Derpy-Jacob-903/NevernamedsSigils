@@ -43,7 +43,7 @@ namespace NevernamedsSigils.Bloons
             {
 
                 //Monkeykind //Delayed Attack
-                if ((attackingSlot.Card.HasAbility(Abstain2.ability) && opposingSlot.Card != null) || (attackingSlot.Card.GetComponent<Delayed>()))
+                if ((attackingSlot.Card.HasAbility(Abstain2.ability) && opposingSlot.Card != null) || (attackingSlot.Card.HasAbility(Delayed.ability)))
                 {
                     attackingSlot.Card.Anim.StrongNegationEffect();
                     return false;

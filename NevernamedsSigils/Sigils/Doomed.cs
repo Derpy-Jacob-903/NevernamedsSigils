@@ -19,7 +19,7 @@ namespace NevernamedsSigils.Bloons
             AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Delayed Attack", "[creature] will wait a set number of turns before being allowed to attack.",
                       typeof(Delayed),
                       categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
-                      powerLevel: -3,
+                      powerLevel: -2,
                       stackable: false,
                       opponentUsable: false,
                       tex: baseIcon,
@@ -61,11 +61,11 @@ namespace NevernamedsSigils.Bloons
         {
             if (Tools.GetActAsInt() == 2)
             {
-                base.Card.RenderInfo.OverrideAbilityIcon(Doomed.ability, pixelCountDownIcons.ContainsKey(num) ? pixelCountDownIcons[num] : basePixelIcon);
+                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, pixelCountDownIcons.ContainsKey(num) ? pixelCountDownIcons[num] : basePixelIcon);
             }
             else
             {
-                base.Card.RenderInfo.OverrideAbilityIcon(Doomed.ability, countDownIcons.ContainsKey(num) ? countDownIcons[num] : baseIcon);
+                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, countDownIcons.ContainsKey(num) ? countDownIcons[num] : baseIcon);
             }
             base.Card.RenderCard();
         }
@@ -74,9 +74,9 @@ namespace NevernamedsSigils.Bloons
             get
             {
                 int customLifespan = 1;
-                if (base.Card.Info.GetExtendedProperty("CustomDocileCounter") != null)
+                if (base.Card.Info.GetExtendedProperty("CustomDelayedCounter") != null)
                 {
-                    bool succeed = int.TryParse(base.Card.Info.GetExtendedProperty("CustomDocileCounter"), out customLifespan);
+                    bool succeed = int.TryParse(base.Card.Info.GetExtendedProperty("CustomDelayedCounter"), out customLifespan);
                     customLifespan = succeed ? customLifespan : 1;
                 }
                 return customLifespan;
@@ -102,7 +102,7 @@ namespace NevernamedsSigils.Bloons
         }
         public override bool RespondsToTurnEnd(bool playerTurnEnd)
         {
-            return base.Card.slot.IsPlayerSlot == playerTurnEnd;
+            return this.Card.slot.IsPlayerSlot == playerTurnEnd;
         }
 
         public override IEnumerator OnTurnEnd(bool playerTurnEnd)
@@ -113,6 +113,7 @@ namespace NevernamedsSigils.Bloons
             ReRenderCard(lifeRemaining);
             if (livedTurns >= life)
             {
+
                 //yield return base.PreSuccessfulTriggerSequence();
                 //Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
                 //yield return new WaitForSeconds(0.15f);

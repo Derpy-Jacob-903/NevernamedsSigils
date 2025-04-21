@@ -46,9 +46,9 @@ namespace NevernamedsSigils.Bloons
             Delayed.Init(); Logger.LogInfo("Delayed INIT WAS FUCKING LOADED");
             Volatile.Init(); Logger.LogInfo("Volatile INIT WAS FUCKING LOADED");
 
-            SlowLatch.Init();
+            SlowLatch.Init(); Logger.LogInfo("SlowLatch WAS FUCKING LOADED");
 
-            EternalBloonTrait.Init(); Logger.LogInfo("INIT WAS FUCKING LOADED");
+            EternalBloonTrait.Init(); Logger.LogInfo("EternalBloonTrait INIT WAS FUCKING LOADED");
 
             CardManager.ModifyCardList += delegate (List<CardInfo> cards)
             {
