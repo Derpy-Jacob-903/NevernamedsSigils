@@ -78,9 +78,12 @@ namespace NevernamedsSigils
                 switch (act)
                 {
                     case 1:
-                        if (card.Info.tribes.Count > 0) { tribe1 = CustomDeathcardPortrait.tribeToInt[Tools.SeededRandomElement(card.Info.tribes)]; }
+                        if (card.Info.tribes.Count > 0) 
+                        { 
+                            try { tribe1 = CustomDeathcardPortrait.tribeToInt[Tools.SeededRandomElement(card.Info.tribes)]; } 
+                            catch (Exception e) { tribe1 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes); }
+                        }
                         else tribe1 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes);
-                        if (CustomDeathcardPortrait.validRandomAct1Tribes.Contains(tribe1)) { tribe1 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes); }
                         break;
                     case 3:
                         tribe1 = 19;
@@ -115,9 +118,12 @@ namespace NevernamedsSigils
                 switch (act)
                 {
                     case 1:
-                        if (card.Info.tribes.Count > 0) { tribe2 = CustomDeathcardPortrait.tribeToInt[Tools.SeededRandomElement(card.Info.tribes)]; }
+                        if (card.Info.tribes.Count > 0)
+                        {
+                            try { tribe2 = CustomDeathcardPortrait.tribeToInt[Tools.SeededRandomElement(card.Info.tribes)]; }
+                            catch (Exception e) { tribe2 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes); }
+                        }
                         else tribe2 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes);
-                        if (CustomDeathcardPortrait.validRandomAct1Tribes.Contains(tribe2)) { tribe2 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes); }
                         break;
                     case 3:
                         tribe2 = 19;
@@ -146,9 +152,12 @@ namespace NevernamedsSigils
                 switch (act)
                 {
                     case 1:
-                        if (card.Info.tribes.Count > 0) { tribe3 = CustomDeathcardPortrait.tribeToInt[Tools.SeededRandomElement(card.Info.tribes)]; }
+                        if (card.Info.tribes.Count > 0)
+                        {
+                            try { tribe3 = CustomDeathcardPortrait.tribeToInt[Tools.SeededRandomElement(card.Info.tribes)]; }
+                            catch (Exception e) { tribe3 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes); }
+                        }
                         else tribe3 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes);
-                        if (CustomDeathcardPortrait.validRandomAct1Tribes.Contains(tribe3)) { tribe3 = Tools.SeededRandomElement(CustomDeathcardPortrait.validRandomAct1Tribes); }
                         break;
                     case 3:
                         tribe3 = 19;
