@@ -33,10 +33,12 @@ namespace NevernamedsSigils.Bloons
             if (cardToDraw != null && cardToDraw.HasSpecialAbility(EternalBloonTrait.ability))
             {
                 logger.LogInfo($"Card {cardToDraw.name} has EternalBloonTrait.");
+                SetKillCount(__instance.Card.Info);
+                SetKillCount(cardToDraw);
                 IEnumerator(__instance, wasSacrifice, killer);
                 return true;
             }
-            logger.LogWarning("Card does not have EternalBloonTrait.");
+            logger.LogInfo("Card does not have EternalBloonTrait.");
             return false;
         }
 
@@ -46,18 +48,17 @@ namespace NevernamedsSigils.Bloons
             if (cardToDraw != null && cardToDraw.HasSpecialAbility(EternalBloonTrait.ability))
             {
                 logger.LogInfo($"Starting IEnumerator for Card {cardToDraw.name}.");
-                SetKillCount(cardToDraw);
-                List<CardModificationInfo> CardToDrawTempMods = new List<CardModificationInfo>
-            {
-                new CardModificationInfo(0, 2 * (int)cardToDraw.GetExtendedPropertyAsInt("deathsWithEternalBloonTraitAndUnkillableSigil"))
-            };
+                CardModificationInfo m = new CardModificationInfo(0, 2);
+
+                __instance.Card.temporaryMods.Add(m);
+                __instance.CardToDrawTempMods.Add(m);
 
                 yield return __instance.PreSuccessfulTriggerSequence();
-                yield return CreateDrawnCard(cardToDraw, CardToDrawTempMods);
+                yield return __instance.CreateDrawnCard();
                 yield return __instance.LearnAbility(0.5f);
                 yield break;
             }
-            logger.LogError("Card to draw is null or missing required ability.");
+            logger.LogInfo("Card to draw is null or missing required ability.");
         }
 
         public static IEnumerator CreateDrawnCard(CardInfo cardToDraw, List<CardModificationInfo> CardToDrawTempMods)
@@ -79,7 +80,7 @@ namespace NevernamedsSigils.Bloons
         {
             int? count = cardToDraw.GetExtendedPropertyAsInt("deathsWithEternalBloonTraitAndUnkillableSigil");
             count = count ?? 0;
-            logger.LogInfo($"Updating kill count for {cardToDraw.name}. New count: {count + 1}");
+            logger.LogInfo($"Updating kill count for {cardToDraw.name}. New count: {count} => {count + 1}");
             cardToDraw.SetExtendedProperty("deathsWithEternalBloonTraitAndUnkillableSigil", count + 1);
         }
     }

@@ -43,9 +43,14 @@ namespace NevernamedsSigils.Bloons
             {
 
                 //Monkeykind //Delayed Attack
-                if ((attackingSlot.Card.HasAbility(Abstain2.ability) && opposingSlot.Card != null) || (attackingSlot.Card.HasAbility(Delayed.ability)))
+                if ((attackingSlot.Card.HasAbility(Abstain2.ability) && opposingSlot.Card != null) || attackingSlot.Card.HasAbility(Delayed.ability) && (attackingSlot.Card.GetComponent<Delayed>().livedTurns < attackingSlot.Card.GetComponent<Delayed>().LifeSpan) || attackingSlot.Card.HasAbility(Freeze.ability))
                 {
                     attackingSlot.Card.Anim.StrongNegationEffect();
+                    if (attackingSlot.Card.HasAbility(Freeze.ability))
+                    {
+                        Delayed d = new Delayed();
+                        d.RemoveSigil(attackingSlot.Card, Freeze.ability);
+                    }
                     return false;
                 }
                 if ((attackingSlot.Card.HasAbility(ArmorPiercing.ability) && opposingSlot.Card != null))
@@ -59,7 +64,33 @@ namespace NevernamedsSigils.Bloons
                 PlayableCard card = attackingSlot.Card;
 
                 List<CardSlot> opponentSlotsWithCards = (attackingSlot.Card.IsPlayerCard() ? Singleton<BoardManager>.Instance.opponentSlots : Singleton<BoardManager>.Instance.playerSlots).FindAll(x => x.Card != null);
-                
+                if (!attackingSlot.Card.HasAbility(Ability.AllStrike))
+                {
+                    if (attackingSlot.Card.HasAbility(TrophyHunter.ability) || Singleton<BoardManager>.Instance.AllSlots.Find(x => (x.IsPlayerSlot == card.IsPlayerCard()) && x.Card && x.Card.HasAbility(Telepathic.ability)))
+                    {
+                    }
+                    else if (attackingSlot.Card.HasAbility(Bully.ability))
+                    {
+                    }
+                    else if (attackingSlot.Card.HasAbility(HomeRun.ability) && attackingSlot.Card.GetComponent<HomeRun>())
+                    {
+                    }
+                    else if (attackingSlot.Card.HasAbility(ArrowStrike.ability))
+                    {
+                        List<CardSlot> viableslots = new List<CardSlot>();
+                        if (opponentSlotsWithCards.Count > 0)
+                        {
+                            viableslots = opponentSlotsWithCards;
+                            CardSlot cardSlot = Tools.SeededRandomElement(viableslots);
+                            opposingSlot = cardSlot;
+                        }
+                        else
+                        {
+                            attackingSlot.Card.Anim.StrongNegationEffect();
+                            return false;
+                        }
+                    }
+                }
             }
             return true;
         }
@@ -73,7 +104,7 @@ namespace NevernamedsSigils.Bloons
         [HarmonyPostfix]
         public static IEnumerator Postfix(IEnumerator enumerator, CardSlot attackingSlot, CardSlot opposingSlot, float waitAfter = 0f)
         {
-            yield return enumerator;
+            yield return enumerator; 
             yield break;
         }
     }

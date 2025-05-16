@@ -12,6 +12,7 @@ using InscryptionAPI.Card;
 using DigitalRuby.LightningBolt;
 using GBC;
 using InscryptionAPI.Resource;
+using InscryptionAPI.Helpers;
 
 namespace NevernamedsSigils.Bloons
 {
@@ -699,6 +700,26 @@ namespace NevernamedsSigils.Bloons
         public static int GetRandomSeed(int manualIncrement = 0)
         {
             return SaveManager.SaveFile.GetCurrentRandomSeed() + Singleton<GlobalTriggerHandler>.Instance.NumTriggersThisBattle + manualIncrement;
+        }
+
+        private static Assembly _assembly;
+        public static Assembly CurrentAssembly
+        {
+            get
+            {
+                if (_assembly == null)
+                    _assembly = Assembly.GetExecutingAssembly();
+                return _assembly;
+            }
+        }
+
+        public static Texture2D LoadTexture(string name)
+        {
+            return TextureHelper.GetImageAsTexture(name + (name.EndsWith(".png") ? "" : ".png"), CurrentAssembly);
+        }
+        public static Sprite LoadSprite(string name)
+        {
+            return TextureHelper.ConvertTexture(TextureHelper.GetImageAsTexture(name + (name.EndsWith(".png") ? "" : ".png"), CurrentAssembly));
         }
     }
 }

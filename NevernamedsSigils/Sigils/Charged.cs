@@ -10,14 +10,14 @@ using UnityEngine;
 
 namespace NevernamedsSigils.Bloons
 {
-    public class Delayed : AbilityBehaviour
+    public class Charged : AbilityBehaviour
     {
         public static void Init()
         {
-            baseIcon = Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_1.png");
-            basePixelIcon = Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile_pixel.png");
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Delayed Attack", "[creature] will wait a set number of turns before being allowed to attack.",
-                      typeof(Delayed),
+            baseIcon = Docile.baseIcon; //Tools.LoadTex("NevernamedsSigils/Resources/Sigils/ability_delayattack_1.png");
+            basePixelIcon = Docile.basePixelIcon; //Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/docile_pixel.png");
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Charged Attack", "[creature] will wait a set number of turns before being allowed to attack.",
+                      typeof(Charged),
                       categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
                       powerLevel: -2,
                       stackable: false,
@@ -61,15 +61,15 @@ namespace NevernamedsSigils.Bloons
         {
             if (Tools.GetActAsInt() == 2)
             {
-                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, pixelCountDownIcons.ContainsKey(num) ? pixelCountDownIcons[num] : basePixelIcon);
+                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, NevernamedsSigils.Docile.countDownPixelIcons.ContainsKey(num) ? NevernamedsSigils.Docile.countDownPixelIcons[num] : basePixelIcon);
             }
             else
             {
-                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, countDownIcons.ContainsKey(num) ? countDownIcons[num] : baseIcon);
+                base.Card.RenderInfo.OverrideAbilityIcon(Delayed.ability, NevernamedsSigils.Docile.countDownIcons.ContainsKey(num) ? NevernamedsSigils.Docile.countDownIcons[num] : baseIcon);
             }
             base.Card.RenderCard();
         }
-        private int LifeSpan
+        public int LifeSpan
         {
             get
             {
@@ -100,16 +100,15 @@ namespace NevernamedsSigils.Bloons
             ReRenderCard(LifeSpan);
             yield break;
         }
-        public override bool RespondsToTurnEnd(bool playerTurnEnd)
+        public override bool RespondsToUpkeep(bool playerUpkeep)
         {
-            return this.Card.slot.IsPlayerSlot == playerTurnEnd;
+            return base.Card.OpponentCard != playerUpkeep;
         }
-
-        public override IEnumerator OnTurnEnd(bool playerTurnEnd)
+        public override IEnumerator OnUpkeep(bool playerUpkeep)
         {
             livedTurns++;
             int life = LifeSpan;
-            int lifeRemaining = Mathf.Max(1, life - livedTurns);
+            int lifeRemaining = Mathf.Max(0, life - livedTurns);
             ReRenderCard(lifeRemaining);
             if (livedTurns >= life)
             {
@@ -118,23 +117,23 @@ namespace NevernamedsSigils.Bloons
                 //Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
                 //yield return new WaitForSeconds(0.15f);
 
-                RemoveSigil(this.Card, this.Ability);
+                //RemoveSigil(Card, Ability);
 
                 //yield return new WaitForSeconds(0.3f);
-                yield return base.LearnAbility(0.1f);
+                //yield return base.LearnAbility(0.1f);
             }
             yield break;
         }
-        private int livedTurns;
+        public int livedTurns = 0;
         public IEnumerator RemoveSigil(PlayableCard targetCard, Ability ability)
         {
             if (targetCard != null && targetCard.HasAbility(ability))
             {
                 yield return PreSuccessfulTriggerSequence();
-                CardModificationInfo newMod = new CardModificationInfo();
+                /*CardModificationInfo newMod = new CardModificationInfo();
                 newMod.negateAbilities = new List<Ability>() { ability };
-                targetCard.AddTemporaryMod(newMod);
-                targetCard.Status.hiddenAbilities.Add(ability);
+                targetCard.AddTemporaryMod(newMod);*/
+                Card.Info.ModAbilities.Remove(Ability);
                 targetCard.RenderCard();
                 targetCard.Anim.StrongNegationEffect();
                 yield return new WaitForSeconds(0.2f);

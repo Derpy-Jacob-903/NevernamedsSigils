@@ -10,20 +10,20 @@ using UnityEngine;
 
 namespace NevernamedsSigils.Bloons
 {
-    public class ArmorPiercing : AbilityBehaviour
+    public class Abstain3 : AbilityBehaviour
     {
         public static void Init()
         {
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("ArmorPiercing", "[creature] will remove the Armored, Sturdy, and Hardheaded sigils before attacking.",
-                      typeof(ArmorPiercing),
-                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
-                      powerLevel: 3,
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Monkeykind", "[creature] will not attack if it would strike an opponent directly, unless forced to by another effect.",
+                      typeof(Abstain3),
+                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook },
+                      powerLevel: -3,
                       stackable: false,
                       opponentUsable: false,
                       tex: Tools.LoadTex("NevernamedsSigils/Resources/Sigils/abstain.png"),
                       pixelTex: Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/abstain_pixel.png"));
 
-            ArmorPiercing.ability = newSigil.ability;
+            Abstain3.ability = newSigil.ability;
         }
         public static Ability ability;
         public override Ability Ability

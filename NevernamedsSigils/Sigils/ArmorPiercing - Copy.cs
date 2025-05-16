@@ -10,20 +10,20 @@ using UnityEngine;
 
 namespace NevernamedsSigils.Bloons
 {
-    public class Abstain2 : AbilityBehaviour
+    public class ArrowStrike : AbilityBehaviour
     {
         public static void Init()
         {
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Monkeykind", "[creature] will not attack if it would strike an opponent directly.",
-                      typeof(Abstain2),
-                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook },
-                      powerLevel: -2,
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Arrow Strike", "[creature] will attack a random opponent card when it attacks, and will fail to attack if no opponent cards exist.",
+                      typeof(ArrowStrike),
+                      categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
+                      powerLevel: 0,
                       stackable: false,
                       opponentUsable: false,
                       tex: Tools.LoadTex("NevernamedsSigils/Resources/Sigils/abstain.png"),
                       pixelTex: Tools.LoadTex("NevernamedsSigils/Resources/PixelSigils/abstain_pixel.png"));
 
-            Abstain2.ability = newSigil.ability;
+            ArrowStrike.ability = newSigil.ability;
         }
         public static Ability ability;
         public override Ability Ability

@@ -19,17 +19,29 @@
     <Compile Remove="CustomDeathcardPortrait.cs" />
     <Compile Remove="FaceToFaceCardsInit.cs" />
     <Compile Remove="NevernamedsTribes.cs" />
+    <Compile Remove="Sigils\Draw.cs" />
+    <Compile Remove="Sigils\Latches\RandLatch.cs" />
+    <Compile Remove="Sigils\MagModManaGas.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Sigils\ability_Armor-Piercing.png" />
+    <None Remove="Resources\Sigils\ability_CyroDetonator.png" />
+    <None Remove="Resources\Sigils\ability_CyroMine.png" />
+    <None Remove="Resources\Sigils\ability_CyroStrike.png" />
+    <None Remove="Resources\Sigils\ability_Defender.png" />
     <None Remove="Resources\Sigils\ability_delayattack.png" />
     <None Remove="Resources\Sigils\ability_delayattack_1.png" />
     <None Remove="Resources\Sigils\ability_delayattack_2.png" />
     <None Remove="Resources\Sigils\ability_delayattack_3.png" />
     <None Remove="Resources\Sigils\ability_delayattack_4.png" />
     <None Remove="Resources\Sigils\ability_delayattack_5.png" />
+    <None Remove="Resources\Sigils\ability_discountDraw.png" />
     <None Remove="Resources\Sigils\ability_Freaky.png" />
     <None Remove="Resources\Sigils\ability_Freeze.png" />
+    <None Remove="Resources\Sigils\ability_LeadToGold.png" />
+    <None Remove="Resources\Sigils\ability_MoabStrike.png" />
+    <None Remove="Resources\Sigils\ability_Unique.png" />
     <None Remove="Resources\Sigils\Latches\ability_HasteLatch.png" />
     <None Remove="Resources\Sigils\Latches\ability_SlowLatch.png" />
   </ItemGroup>
@@ -776,6 +788,15 @@
     <EmbeddedResource Include="Resources\RobotDeathcards\head_robot_7.png" />
     <EmbeddedResource Include="Resources\RobotDeathcards\head_robot_8.png" />
     <EmbeddedResource Include="Resources\RobotDeathcards\head_robot_9.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_Armor-Piercing.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_CyroDetonator.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_CyroMine.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_CyroStrike.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_Defender.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_discountDraw.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_LeadToGold.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_MoabStrike.png" />
+    <EmbeddedResource Include="Resources\Sigils\ability_Unique.png" />
     <EmbeddedResource Include="Resources\Sigils\absorber.png" />
     <EmbeddedResource Include="Resources\Sigils\Activated\broodfeast.png" />
     <EmbeddedResource Include="Resources\Sigils\Activated\deckdrain.png" />
@@ -1805,6 +1826,9 @@
     <None Include="CustomDeathcardPortrait.cs" />
     <None Include="FaceToFaceCardsInit.cs" />
     <None Include="NevernamedsTribes.cs" />
+    <None Include="Sigils\Draw.cs" />
+    <None Include="Sigils\Latches\RandLatch.cs" />
+    <None Include="Sigils\MagModManaGas.cs" />
   </ItemGroup>
 
   <ItemGroup>

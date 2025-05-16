@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace NevernamedsSigils.Bloons
 {
-    public class SlowLatch : AltLatch
+    public class BoostLatch : AltLatch
     {
         public static void Init()
         {
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Slowing Latch", "When [creature] perishes, its owner chooses a creature to gain the Delayed Attack sigil. If the target creature has the Delayed Attack or Docile sigil, that sigil's counter is increased by 1 instead.",
-                      typeof(SlowLatch),
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Booster Latch", "When [creature] perishes, its owner chooses a creature to gain 1 Power, 2 Health, and the Delayed Attack sigil. If the target creature has a Variable Power Stat, that creature gains +0/+3 instead of +1/+2. If the target creature has the Delayed Attack or Docile sigil, that sigil's counter is increased by 1 instead of gaining the Delayed Attack sigil.",
+                      typeof(BoostLatch),
                       categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
                       powerLevel: 0,
                       stackable: false,
@@ -51,8 +51,15 @@ namespace NevernamedsSigils.Bloons
                     }
                 }
             }
-            //if (selectedSlot.Card.has)
-
+            foreach (CardModificationInfo cardModificationInfo in this.Card.TemporaryMods)
+            {
+                if (cardModificationInfo.singletonId == "VARIABLE_STAT")
+                {
+                    this.Card.AddTemporaryMod(new CardModificationInfo(0, 3));
+                    yield break;
+                }
+            }
+            this.Card.AddTemporaryMod(new CardModificationInfo(1, 2));
             yield break;
         }
 

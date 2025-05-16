@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace NevernamedsSigils.Bloons
 {
-    public class SlowLatch : AltLatch
+    public class HasteLatch : AltLatch
     {
         public static void Init()
         {
-            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Slowing Latch", "When [creature] perishes, its owner chooses a creature to gain the Delayed Attack sigil. If the target creature has the Delayed Attack or Docile sigil, that sigil's counter is increased by 1 instead.",
-                      typeof(SlowLatch),
+            AbilityInfo newSigil = SigilSetupUtility.MakeNewSigil("Hastening Latch", "When [creature] perishes, its owner chooses a creature to attack once. If the target creature has the Delayed Attack or Docile sigil, that sigil's counter is decreased by 1 instead.",
+                      typeof(HasteLatch),
                       categories: new List<AbilityMetaCategory> { AbilityMetaCategory.Part1Rulebook, AbilityMetaCategory.Part3Rulebook, AbilityMetaCategory.GrimoraRulebook, AbilityMetaCategory.MagnificusRulebook },
                       powerLevel: 0,
                       stackable: false,
@@ -24,19 +24,19 @@ namespace NevernamedsSigils.Bloons
 
             ability = newSigil.ability;
         }
-        public static Ability ability;
+        public static new Ability ability;
 
         public override IEnumerator ForLatched(CardSlot selectedSlot)
         {
             if (selectedSlot.Card.HasAbility(Delayed.ability))
             {
-                selectedSlot.Card.GetComponent<Delayed>().livedTurns--;
+                selectedSlot.Card.GetComponent<Delayed>().livedTurns++;
             }
             else
             {
-                if (selectedSlot.Card.HasAbility(NevernamedsSigils.Docile.ability))
+                if (selectedSlot.Card.HasAbility(NevernamedsSigils.Docile.ability) && selectedSlot.Card.GetComponent<Docile>().turnsUntilNextAttack > 0)
                 {
-                    selectedSlot.Card.GetComponent<Docile>().turnsUntilNextAttack++;
+                    selectedSlot.Card.GetComponent<Docile>().turnsUntilNextAttack--;
                 }
                 else
                 {
@@ -46,13 +46,12 @@ namespace NevernamedsSigils.Bloons
                     }
                     else
                     {
-                        CardModificationInfo cardModificationInfo = new CardModificationInfo(Delayed.ability);
-                        selectedSlot.Card.AddTemporaryMod(cardModificationInfo);
+                        selectedSlot.Card.ForceCardAttackOutsideOfCombat();
                     }
+                    //CardModificationInfo cardModificationInfo = new CardModificationInfo(Delayed.ability);
+                    //Card.AddTemporaryMod(cardModificationInfo);
                 }
             }
-            //if (selectedSlot.Card.has)
-
             yield break;
         }
 
